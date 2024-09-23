@@ -28,7 +28,9 @@ class VerifyOauth2Token:
         self.oidc_url: AnyHttpUrl = settings.well_known_url
         self.client_id: str = settings.client_id
         # Hent OIDC konfigurasjon fra angitt URL
-        self.oidc_config: dict[str, Any] = httpx.get(str(self.oidc_url)).json()
+        self.oidc_config: dict[str, Any] = (
+            httpx.get(str(self.oidc_url)).raise_for_status().json()
+        )
         self.jwks_client: jwt.PyJWKClient = jwt.PyJWKClient(
             self.oidc_config["jwks_uri"]
         )
