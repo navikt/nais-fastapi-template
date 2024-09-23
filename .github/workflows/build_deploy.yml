@@ -25,6 +25,8 @@ jobs:
     name: Lanser på NAIS
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
