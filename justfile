@@ -7,6 +7,10 @@ fix:
 lint:
     uv run pre-commit run --all-files --color always
 
+# Server FastAPI applikasjonen lokalt
+serve:
+    uv run fastapi dev ./src/nais_fastapi_template/main.py --port 8080
+
 # Kjør tester med PyTest
 # test:
 #    uv run pytest -rs tests/
