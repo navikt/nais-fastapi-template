@@ -8,6 +8,18 @@ noe spennende, men det er alt rundt som kanskje kan fungere som inspirasjon.
 > For å starte å utvikle i dette prosjektet kjør `uv sync --frozen`, det vil
 > installere avhengigheter og gjøre alt klart
 
+## NAIS oppsett
+
+For å kunne lansere en applikasjon på NAIS må NAIS først vite hvordan vi ønsker
+at denne applikasjonen fungerer. Dette spesifiseres i en, eller flere, YAML
+filer i `.nais/` mappen.
+
+For dette prosjektet har vi en minimal FastAPI applikasjon med autentisering på
+NAIS, men vi anbefaler å se over [`app.yaml`](.nais/app.yaml) og lese
+[dokumentasjonen til
+NAIS](https://docs.nais.io/workloads/application/reference/application-spec/)
+for å se hvordan variablene henger sammen.
+
 ## Verktøy
 
 Dette prosjektet inneholder flere verktøy hvor ikke alle er like nødvendige.
