@@ -1,0 +1,1 @@
+"""NAIS/Kubernetes endepunkter."""
