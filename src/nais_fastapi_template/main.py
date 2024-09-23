@@ -24,13 +24,10 @@ app.include_router(nais_router, tags=["nais"])
 @app.get("/")
 async def redirect_main() -> RedirectResponse:
     """Redirect brukere til dokumentasjonen."""
-    # return RedirectResponse("/oauth2/login?redirect=/docs")
-
-    # For denne applikasjonen så trenger vi ikke at bruker nødvendigvis er
-    # logget inn for å kunne se på dokumentasjonen, men hvis det alltid er
-    # ønskelig så kan man bruke linjen over for å sende bruker til innlogging så
-    # til dokumentasjon
-    return RedirectResponse("/docs")
+    # Hvis prosjektet bare eksponerer et HTTP/REST grensesnitt så kan det være
+    # behjelpelig å omdirigere bruker fra `/` til `/docs` gjennom
+    # innloggingsportalen
+    return RedirectResponse("/oauth2/login?redirect=/docs")
 
 
 @app.get("/api/v1/test_verification", tags=["api"])
