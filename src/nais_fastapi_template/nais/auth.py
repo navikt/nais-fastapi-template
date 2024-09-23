@@ -8,7 +8,7 @@ import httpx
 import jwt
 import structlog
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials, OpenIdConnect, SecurityScopes
+from fastapi.security import OpenIdConnect, SecurityScopes
 from pydantic import AnyHttpUrl
 
 from nais_fastapi_template.settings import settings
@@ -42,7 +42,7 @@ class VerifyOauth2Token:
     async def verify(
         self,
         security_scopes: SecurityScopes,
-        token: Annotated[HTTPAuthorizationCredentials, Depends(token_security)],
+        token: Annotated[str, Depends(token_security)],
     ) -> dict[str, Any]:
         """Verifiser at spørring har gyldig Entra ID token."""
         unauthenticated_exception = HTTPException(
@@ -50,8 +50,12 @@ class VerifyOauth2Token:
             detail="Ikke gyldig akkreditering",
             headers={"WWW-Authenticate": "Bearer"},
         )
+        scheme, token = token.split(" ", maxsplit=1)
+        if scheme != "Bearer":
+            log.error("Ukjent autentisering scheme", token=token, scheme=scheme)
+            raise unauthenticated_exception
         try:
-            signing_key = self.jwks_client.get_signing_key_from_jwt(token.credentials)
+            signing_key = self.jwks_client.get_signing_key_from_jwt(token)
         except jwt.exceptions.PyJWKClientError:
             log.exception(
                 "Klarte ikke å hente signeringsnøkkel ",
@@ -64,7 +68,7 @@ class VerifyOauth2Token:
 
         try:
             payload: dict[str, Any] = jwt.decode(
-                token.credentials,
+                token,
                 signing_key.key,
                 algorithms=self.signing_algos,
                 # Basert på NAIS sin dokumentasjon, skal en token inneholde:
