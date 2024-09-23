@@ -34,7 +34,7 @@ async def redirect_main() -> RedirectResponse:
 
 
 @app.get("/api/v1/test_verification", tags=["api"])
-def test_verification(
+async def test_verification(
     token: dict[str, Any] = Security(TOKEN_VERIFICATION.verify),
 ) -> dict[str, Any]:
     """Endepunkt som verifiserer at bruker er logget inn."""
