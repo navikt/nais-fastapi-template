@@ -1,0 +1,18 @@
+# Oppsett for prosjektet
+.env
+.github/
+.gitignore
+.nais/
+.pre-commit-config.yaml
+Dockerfile
+justfile
+ruff.toml
+tests/
+
+# Cache mapper
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Virtueltmiljø
+.venv/

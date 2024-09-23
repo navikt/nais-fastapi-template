@@ -100,3 +100,28 @@ Vi har inkludert noen enkle kommandoer, som `just fix` som kjører `ruff` og
 `just lint` som kjører `pre-commit`.
 
 Bruk `just --list` for å se alle oppskrifter og beskrivelser.
+
+## Docker
+
+For å kunne lansere applikasjonen på NAIS trenger vi å bygge et [Docker
+bilde](https://docs.docker.com/get-started/). Man kan tenke på et Docker bildet
+som en privat virtuell maskin som inneholder bare de pakkene vi trenger.
+
+I dette prosjektet bygger vi applikasjonen i to steg. Først installerer vi
+avhengigheter uten å installere selve prosjektet. Dette gjøres for å forbedre
+tiden det tar å bygge Docker bilder, neste gang vi bygger Docker bildet vil
+Docker huske at vi har installert avhengigheter og hvis ikke noe har forandret
+seg så kopierer Docker det vi bygget før. Deretter installerer vi applikasjonen,
+denne forandrer seg ofte så her hjelper det lite å huske hva som er gjort før.
+
+Det neste steget i bygging av Docker bildet er å starte et nytt bygg fra et
+`distroless` bilde. Vi bruker `distroless` for å minimere antall eksterne
+avhengigheter som er installert i Docker og dette burde gi færre sårbarheter. Vi
+kopierer så inn det vi bygget i det første steget og har nå laget et nytt
+minimalt Docker bilde.
+
+> [!TIP]
+> Filen `.dockerignore` inneholder en liste med alle filene og mappene som
+> Docker skal overse når vi kopierer inn til Docker bildet. Denne filen gjør at
+> vi enkelt kan si at vi vil kopiere alt i nåværende mappe uten å måtte
+> spesifisere akkurat hvilke ting vi vil ha med.
